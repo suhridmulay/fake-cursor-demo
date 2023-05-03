@@ -23,7 +23,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 
 setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
 
-
+let targetX = 0, targetY = 0;
 let cursorX = 0, cursorY = 0;
 let oldfocused: any;
 const fakeCursor = document.getElementById('fake-cursor') as HTMLDivElement;
@@ -67,8 +67,6 @@ window.addEventListener('keydown', (e) => {
       }
     }
   }
-  fakeCursor.style.left = `${cursorX}px`
-  fakeCursor.style.top = `${cursorY}px`
 
   let elem = document.elementFromPoint(cursorX, cursorY);
   if (elem instanceof HTMLElement) {
@@ -79,3 +77,17 @@ window.addEventListener('keydown', (e) => {
     oldfocused = elem;
   }
 })
+
+function lerp(start: number, stop: number, amt: number) {
+  return start + (stop - start) * amt; 
+}
+
+function animate() {
+  targetX = lerp(targetX, cursorX, 0.1);
+  targetY = lerp(targetY, cursorY, 0.1);
+  fakeCursor.style.left = `${targetX}px`
+  fakeCursor.style.top = `${targetY}px`
+  window.requestAnimationFrame(animate);
+}
+
+window.requestAnimationFrame(animate)
