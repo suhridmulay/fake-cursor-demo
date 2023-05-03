@@ -25,6 +25,7 @@ setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
 
 
 let cursorX = 0, cursorY = 0;
+let oldfocused;
 const fakeCursor = document.getElementById('fake-cursor') as HTMLDivElement;
 
 window.addEventListener('keydown', (e) => {
@@ -68,4 +69,13 @@ window.addEventListener('keydown', (e) => {
   }
   fakeCursor.style.left = `${cursorX}px`
   fakeCursor.style.top = `${cursorY}px`
+
+  let elem = document.elementFromPoint(cursorX, cursorY);
+  if (elem instanceof HTMLElement) {
+    if (oldfocused) {
+      oldfocused.blur()
+    }
+    elem.focus()
+    oldfocused = elem;
+  }
 })
