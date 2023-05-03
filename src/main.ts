@@ -22,3 +22,50 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 `
 
 setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+
+
+let cursorX = 0, cursorY = 0;
+const fakeCursor = document.getElementById('fake-cursor') as HTMLDivElement;
+
+window.addEventListener('keydown', (e) => {
+  console.log({cursorX, cursorY});
+  switch (e.key) {
+    case 'ArrowUp': {
+      cursorY -= 10;
+      if (cursorY < 0) {
+        cursorY = 0;
+      }
+      break;
+    }
+    case 'ArrowDown': {
+      cursorY += 10;
+      if (cursorY > window.innerHeight) {
+        cursorY = window.innerHeight;
+      }
+      break;
+    }
+    case 'ArrowLeft': {
+      cursorX -= 10;
+      if (cursorX < 0) {
+        cursorX = 0;
+      }
+      break;
+    }
+    case 'ArrowRight': {
+      cursorX += 10;
+      if (cursorX > window.innerWidth) {
+        cursorX = 0;
+      }
+      break;
+    }
+
+    case 'Enter': {
+      let e = document.elementFromPoint(cursorX, cursorY);
+      if (e instanceof HTMLElement) {
+        e.click();
+      }
+    }
+  }
+  fakeCursor.style.left = `${cursorX}px`
+  fakeCursor.style.top = `${cursorY}px`
+})
